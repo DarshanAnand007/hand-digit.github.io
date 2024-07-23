@@ -1,4 +1,3 @@
-
 import torch
 import base64
 import config
@@ -70,11 +69,11 @@ def prob_img(probs):
 
 def interpretability_img(save_output):
     images = module_output_to_numpy(save_output.outputs[0])
-    with plt.style.context("seaborn-white"):
+    with plt.style.context("ggplot"):  # Changed the style to "ggplot"
         fig, _ = plt.subplots(figsize=(20, 20))
         plt.suptitle("Interpretability by Model", fontsize=50)
         for idx in range(16):
-            plt.subplot(4, 4, idx+1)
+            plt.subplot(4, 4, idx + 1)
             plt.imshow(images[0, idx])
         plt.setp(plt.gcf().get_axes(), xticks=[], yticks=[])
     interpretimg = BytesIO()
@@ -101,7 +100,7 @@ def mnist_prediction(img):
 @app.route("/process", methods=["GET", "POST"])
 def process():
     data_url = str(request.get_data())
-    offset = data_url.index(',')+1
+    offset = data_url.index(',') + 1
     img_bytes = base64.b64decode(data_url[offset:])
     img = Image.open(BytesIO(img_bytes))
     img = img.convert('L')
